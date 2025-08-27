@@ -12,6 +12,79 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <style>
+    /* Responsive utilities for index / hero */
+
+/* Fluid type scale for headings on the hero */
+:root{
+  --hero-min: 1.3rem;    /* small phones */
+  --hero-mid: 2.25rem;   /* tablets */
+  --hero-max: 3.25rem;   /* large desktop */
+}
+
+/* hero container becomes perfectly fluid and stacks gracefully */
+.hero-inner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* auto-fit tiles */
+  gap: clamp(12px, 2.2vw, 28px);
+  align-items: center;
+}
+
+/* hero title: truly fluid */
+.hero h1 {
+  font-size: clamp(var(--hero-min), 4vw, var(--hero-max));
+  line-height: 1.02;
+  margin: 0 0 0.6rem 0;
+}
+
+/* visual orb scales with available width, keeps aspect ratio */
+.orb {
+  width: min(46vw, 320px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  margin-inline: auto;
+  transition: transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .35s;
+}
+
+/* larger touch targets for CTAs */
+.cta {
+  min-height: 56px;               /* bigger touch area */
+  padding: 12px 18px;
+  font-size: clamp(14px, 2.6vw, 16px);
+}
+
+/* Features grid: responsive auto-fit */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(12px, 2.6vw, 20px);
+}
+
+/* Stacked layout on the smallest screens (ensures comfortable reading) */
+@media (max-width:420px) {
+  .hero { padding-block: 22px; }
+  .hero-card { padding: 18px; border-radius: 12px; }
+  .nav a { padding: 10px; font-size: 14px; }
+}
+
+/* Container query for browsers that support it (polished breakpoints) */
+@container (min-width: 520px) {
+  .feature { padding: 20px; }
+}
+
+/* Respect reduced motion users */
+@media (prefers-reduced-motion: reduce) {
+  .orb, .float-glyph { animation: none !important; transition: none !important; }
+}
+
+/* Safe area (iPhone notch) */
+:root { --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom); }
+.site-header { padding-top: calc(10px + var(--safe-top)); }
+main { padding-bottom: calc(20px + var(--safe-bottom)); }
+
+/* Minor performance-friendly reveal: staggered opacity using will-change only */
+.feature { will-change: opacity, transform; }
     /* Page-specific styles: keep small and modular */
     :root{--hero-h:72vh;--glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.06)}
     body{min-height:100vh;display:flex;flex-direction:column}
