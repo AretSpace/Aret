@@ -1,7 +1,4 @@
-/* ARET — Shared auth helpers (js/auth.js)
-   - Attach this file on every auth page with `defer`.
-   - Replace demo endpoints and demo flows with your real backend endpoints.
-*/
+
 
 (function(){
   'use strict';
@@ -151,5 +148,52 @@
 
   // Expose helpers for debugging (optional)
   window.ARETAuth = { scorePassword };
+
+   /* Mobile nav toggle — add to js/auth.js or save as js/ui.js */
+(function(){
+  // Wait for DOM
+  document.addEventListener('DOMContentLoaded', function(){
+    // If nav toggle button exists, wire it. If not, create one for compatibility.
+    function ensureToggle() {
+      const header = document.querySelector('.site-header') || document.querySelector('header');
+      if (!header) return;
+      let toggle = header.querySelector('.nav-toggle');
+      const nav = header.querySelector('.nav');
+      if (!toggle) {
+        // create a toggle button (if header markup didn't include one)
+        toggle = document.createElement('button');
+        toggle.className = 'nav-toggle';
+        toggle.id = 'navToggle';
+        toggle.setAttribute('aria-label', 'Toggle navigation');
+        toggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d=\"M3 6h18M3 12h18M3 18h18\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>';
+        header.insertBefore(toggle, nav || header.firstChild);
+      }
+      if (!nav) return;
+
+      function closeNav() { nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); }
+      function openNav() { nav.classList.add('open'); toggle.setAttribute('aria-expanded','true'); }
+
+      toggle.addEventListener('click', function(e){
+        e.stopPropagation();
+        if (nav.classList.contains('open')) closeNav(); else openNav();
+      });
+
+      // Close nav when clicking a link (good UX)
+      nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { closeNav(); }));
+
+      // Close on outside click
+      document.addEventListener('click', (ev) => {
+        if (!nav.contains(ev.target) && !toggle.contains(ev.target)) closeNav();
+      });
+
+      // Close on escape
+      document.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Escape') closeNav();
+      });
+    }
+
+    ensureToggle();
+  });
+})();
 
 })();
