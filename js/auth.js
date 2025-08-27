@@ -195,5 +195,42 @@
     ensureToggle();
   });
 })();
+// Mobile nav UX polish (paste at end of js/auth.js)
+(function(){
+  document.addEventListener('DOMContentLoaded', function(){
+    const header = document.querySelector('.site-header');
+    const toggle = document.getElementById('navToggle');
+    const nav = header ? header.querySelector('.nav') : null;
+    if (!nav || !toggle) return;
 
+    function openNav(){
+      nav.classList.add('open');
+      toggle.setAttribute('aria-expanded','true');
+      // Ensure nav is visible from top on small screens
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.body.style.overflow = 'hidden'; // prevent background scroll while nav open
+    }
+    function closeNav(){
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded','false');
+      document.body.style.overflow = ''; // restore scroll
+    }
+
+    toggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      if (nav.classList.contains('open')) closeNav(); else openNav();
+    });
+
+    // Close nav on outside click or Esc key
+    document.addEventListener('click', (ev) => {
+      if (!nav.contains(ev.target) && !toggle.contains(ev.target)) closeNav();
+    });
+    document.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape') closeNav();
+    });
+
+    // Close nav when a link is tapped (good mobile UX)
+    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+  });
+})();
 })();
