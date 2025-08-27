@@ -164,4 +164,73 @@ img, svg { max-width:100%; height:auto; display:block; }
 /* Accessibility: focus styles */
 a:focus, button:focus, input:focus { outline: 3px solid rgba(78,226,199,0.14); outline-offset:2px; }
 
+/* ===== ARET — Mobile fixes (paste at END of css/styles.css) ===== */
+
+/* Reserve space for fixed header so content isn't hidden behind it */
+main, .hero, .wrap, .container {
+  padding-top: calc(64px + env(safe-area-inset-top)); /* header height safe space */
+}
+
+/* Slightly reduce hero min-height on small screens to avoid scroll clipping */
+@media (max-width: 540px) {
+  .hero { min-height: 64vh; padding: 18px 12px; }
+}
+
+/* Make CTA buttons full width and large touch targets on phones */
+@media (max-width: 520px) {
+  .cta-row { display:flex; flex-direction:column; gap:12px; }
+  .cta { width:100%; min-height:56px; padding:14px; font-size:16px; border-radius:10px; }
+}
+
+/* Keep card padding compact on small screens so content fits */
+@media (max-width: 520px) {
+  .hero-card, .card, .recover-card, .panel { padding:14px; border-radius:12px; }
+}
+
+/* Reduce the logo/header height and spacing when screen is small */
+@media (max-width: 520px) {
+  .brand-inline .title { font-size:18px; }
+  .site-header { padding:8px 12px; }
+  .brand-inline > svg { width:34px; height:34px; }
+}
+
+/* Ensure nav overlay sits above hero and is full height */
+.nav {
+  z-index: 60;
+  -webkit-overflow-scrolling: touch;
+}
+@media (max-width: 799px) {
+  .nav { top: calc(64px + env(safe-area-inset-top)); bottom:0; overflow:auto; }
+  .nav.open { transform: translateY(0); opacity:1; pointer-events:auto; }
+}
+
+/* Prevent decorative floats from blocking interactive areas */
+.float-glyph { pointer-events: none; user-select: none; }
+
+/* Make the inline SVG emblem scale better and avoid overflow */
+.orb { max-width: 84vw; max-height: 48vh; margin-top: 8px; margin-bottom: 10px; }
+
+/* Tweak feature cards so they don't overflow viewport width */
+.features { padding-inline: 12px; }
+.feature { min-height: auto; }
+
+/* Reduce box-shadows slightly on small screens to avoid heavy repaints */
+@media (max-width: 420px) {
+  .card, .hero-card { box-shadow: 0 8px 30px rgba(3,6,12,0.45); }
+}
+
+/* Ensure forms and inputs take full width and don't overflow */
+.input, textarea.input { width: 100%; box-sizing: border-box; }
+
+/* Ensure footer safe area at bottom (for phones with gesture bar) */
+.site-footer { padding-bottom: calc(18px + env(safe-area-inset-bottom)); }
+
+/* Respect reduced-motion users: flatten animations for performance on low-end phones */
+@media (prefers-reduced-motion: reduce), (max-width: 360px) {
+  .orb, .float-glyph, .feature { animation: none !important; transition: none !important; }
+}
+
+/* Small utility: large clickable area for links inside header overlay */
+.nav a { display:block; padding:12px 16px; border-radius:8px; }
+
 /* End of file */
