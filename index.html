@@ -297,5 +297,43 @@ main { padding-bottom: calc(20px + var(--safe-bottom)); }
 
     })();
   </script>
+  <script>
+(function(){
+  // Prefer low-data connections: swap to small image if Save-Data or slow connection
+  try {
+    const img = document.querySelector('.panel-visual picture img');
+    const nav = document.querySelector('.nav');
+    if (navigator.connection) {
+      const conn = navigator.connection;
+      if (conn.saveData || (conn.effectiveType && /2g|slow-2g/.test(conn.effectiveType))) {
+        if (img && img.dataset && img.dataset.low) img.src = img.dataset.low;
+      }
+    }
+    // Responsive fine-tuning: scale orb slightly on very narrow screens
+    const orb = document.querySelector('.orb');
+    if (orb) {
+      const ro = new ResizeObserver(entries => {
+        for (const e of entries) {
+          const w = e.contentRect.width;
+          // reduce shadow/transform on tiny widths
+          if (w < 220) orb.style.transform = 'scale(0.92)';
+          else orb.style.transform = '';
+        }
+      });
+      ro.observe(orb);
+    }
+
+    // Improve perceived performance: lazy-load feature images if any
+    document.addEventListener('DOMContentLoaded', () => {
+      const lazyImgs = document.querySelectorAll('img[loading="lazy"]');
+      lazyImgs.forEach(i => { if (i.complete) i.classList.add('loaded'); });
+    });
+
+  } catch (err) {
+    // fail silently — nothing critical
+    console.warn('ARET responsive helper:', err);
+  }
+})();
+  </script>
 </body>
 </html>
