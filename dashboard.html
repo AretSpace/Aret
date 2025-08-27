@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ARET — Dashboard</title>
+  <meta name="description" content="ARET — Competitor dashboard. Overview, upcoming rounds, leaderboard and progress." />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Dashboard-specific tweaks (kept small) */
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);box-shadow:0 6px 20px rgba(3,6,12,0.35)}
+    .brand-inline{display:flex;align-items:center;gap:12px}
+    .brand-inline .title{font-size:20px;letter-spacing:2px}
+    .user-area{display:flex;align-items:center;gap:12px}
+    .avatar{width:44px;height:44px;border-radius:10px;background:linear-gradient(90deg,var(--gold),var(--turq));display:flex;align-items:center;justify-content:center;color:#071014;font-weight:700;}
+    .container-grid{display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px}
+    @media(min-width:1000px){.container-grid{grid-template-columns:360px 1fr}}
+    .card-sm{padding:16px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.03)}
+    .progress-big{height:18px;border-radius:10px;background:rgba(255,255,255,0.03);overflow:hidden}
+    .progress-big > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--turq));transition:width .6s}
+    .small-list{display:flex;flex-direction:column;gap:10px}
+    .round-item{display:flex;justify-content:space-between;gap:12px;padding:10px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+    .leaderboard{display:flex;flex-direction:column;gap:10px}
+    .leader-row{display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+    .chip{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);font-weight:600}
+    .quick-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .action{padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);cursor:pointer}
+    .empty{color:var(--muted);font-size:14px}
+    footer.site-footer{margin-top:22px;text-align:center;color:var(--muted);font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="starfield" aria-hidden="true"></div>
+  <div class="nebula" aria-hidden="true"></div>
+
+  <main class="wrap" role="main" style="padding:20px;">
+    <!-- Top bar -->
+    <div class="topbar" style="grid-column:1/-1">
+      <div class="brand-inline" aria-hidden="false">
+        <svg width="40" height="40" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="10" fill="rgba(255,215,110,0.03)" stroke="rgba(255,215,110,0.08)"/><path d="M32 14 L44 30 L20 30 Z" fill="url(#g)"/><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#FFD36E"/><stop offset="1" stop-color="#4EE2C7"/></linearGradient></defs></svg>
+        <div>
+          <div class="title">ARET</div>
+          <div style="font-size:12px;color:var(--muted)">Participant dashboard</div>
+        </div>
+      </div>
+
+      <div class="user-area" aria-hidden="false">
+        <div style="text-align:right">
+          <div style="font-weight:700">Mahmoud</div>
+          <div style="font-size:12px;color:var(--muted)">Rating: <span style="font-weight:700">1685</span></div>
+        </div>
+
+        <div class="avatar" aria-hidden="true">M</div>
+
+        <button id="logoutBtn" class="btn" title="Sign out">Logout</button>
+      </div>
+    </div>
+
+    <!-- Left column -->
+    <aside>
+      <div class="card-sm">
+        <h3 style="margin:0 0 6px 0">Progress</h3>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:12px">Season target: reach 2200</div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="flex:1">
+            <div class="progress-big" aria-hidden="true"><i id="seasonProgress"></i></div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:13px;color:var(--muted)"><span>Current: 1685</span><span>Target: 2200</span></div>
+          </div>
+          <div style="width:86px;text-align:center">
+            <div class="chip">+12 this month</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-sm" style="margin-top:12px">
+        <h4 style="margin:0 0 8px 0">Upcoming rounds</h4>
+        <div class="small-list">
+          <div class="round-item">
+            <div>
+              <div style="font-weight:700">Qualifiers — Round 1</div>
+              <div style="font-size:13px;color:var(--muted)">Sep 12, 2025 · 18:00 UTC</div>
+            </div>
+            <div class="chip">Register</div>
+          </div>
+
+          <div class="round-item">
+            <div>
+              <div style="font-weight:700">Puzzle Blitz</div>
+              <div style="font-size:13px;color:var(--muted)">Sep 30, 2025 · 20:00 UTC</div>
+            </div>
+            <div class="chip">Details</div>
+          </div>
+
+          <div class="round-item">
+            <div class="empty">No more scheduled rounds — check later</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-sm" style="margin-top:12px">
+        <h4 style="margin:0 0 8px 0">Quick actions</h4>
+        <div class="quick-actions">
+          <div class="action" onclick="location.href='signup.html'">Create team</div>
+          <div class="action" onclick="location.href='dashboard.html#submissions'">My submissions</div>
+          <div class="action" onclick="location.href='dashboard.html#leaderboard'">View leaderboard</div>
+          <div class="action" onclick="location.href='recover.html'">Reset password</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right column -->
+    <section>
+      <div class="card-sm" style="margin-bottom:12px">
+        <h3 style="margin:0 0 6px 0">Welcome, Mahmoud</h3>
+        <p class="lead" style="margin:0;color:var(--muted)">Overview of your recent activity, rounds, and leaderboard position.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr;gap:12px">
+        <div class="card-sm">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h4 style="margin:0">Leaderboard snapshot</h4>
+            <div style="font-size:13px;color:var(--muted)">Updated just now</div>
+          </div>
+
+          <div id="leaderboard" class="leaderboard" style="margin-top:10px" aria-live="polite">
+            <!-- Populated by inline script -->
+          </div>
+
+        </div>
+
+        <div class="card-sm">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h4 style="margin:0">Recent submissions</h4>
+            <div style="font-size:13px;color:var(--muted)"><a href="#" class="link">View all</a></div>
+          </div>
+
+          <div id="submissions" style="margin-top:12px;display:flex;flex-direction:column;gap:10px">
+            <div class="round-item">
+              <div>
+                <div style="font-weight:700">Problem: Star Pyramid</div>
+                <div style="font-size:13px;color:var(--muted)">Solved — 2 hours ago</div>
+              </div>
+              <div><span class="chip">+10 pts</span></div>
+            </div>
+
+            <div class="round-item">
+              <div>
+                <div style="font-weight:700">Problem: Cosmic Maze</div>
+                <div style="font-size:13px;color:var(--muted)">Attempted — 1 day ago</div>
+              </div>
+              <div><span class="chip">+0 pts</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="site-footer">
+        ARET — © <span id="year"></span>. Designed for the competition · <a href="login.html" class="link">Sign out</a>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Shared auth helpers (keeps login/logout behavior consistent) -->
+  <script src="js/auth.js" defer></script>
+
+  <!-- Dashboard-specific script -->
+  <script>
+    (function(){
+      // Demo: fill progress and leaderboard with sample data.
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Season progress (example data)
+      const current = 1685;
+      const target = 2200;
+      const percent = Math.round(((current - 1400) / (target - 1400)) * 100); // arbitrary mapping for display
+      document.getElementById('seasonProgress').style.width = Math.max(6, Math.min(100, percent)) + '%';
+
+      // Leaderboard sample (top 5)
+      const leaders = [
+        { rank: 1, name: 'Noura', rating: 1885 },
+        { rank: 2, name: 'Omar', rating: 1810 },
+        { rank: 3, name: 'Bassem', rating: 1760 },
+        { rank: 4, name: 'Amira', rating: 1725 },
+        { rank: 5, name: 'Mahmoud', rating: 1685 }
+      ];
+
+      const lb = document.getElementById('leaderboard');
+      leaders.forEach(p => {
+        const row = document.createElement('div');
+        row.className = 'leader-row';
+        row.innerHTML = `
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:center;font-weight:700">${p.rank}</div>
+            <div>
+              <div style="font-weight:700">${p.name}</div>
+              <div style="font-size:13px;color:var(--muted)">Player</div>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-weight:700">${p.rating}</div>
+            <div style="font-size:12px;color:var(--muted)">Pts</div>
+          </div>
+        `;
+        lb.appendChild(row);
+      });
+
+      // Logout handler (also works if js/auth.js provides other behavior)
+      const logoutBtn = document.getElementById('logoutBtn');
+      logoutBtn.addEventListener('click', function(){
+        // For production: call your backend to revoke session or token then redirect.
+        // Example: fetch('/api/logout', { method:'POST', credentials:'include' }).then(()=> location.href='login.html')
+        location.href = 'login.html';
+      });
+
+      // Accessibility: focus management when page loads
+      window.addEventListener('load', function(){
+        // Move focus to main heading for screen readers
+        const heading = document.querySelector('main h3') || document.querySelector('h2');
+        if (heading && heading.focus) {
+          heading.setAttribute('tabindex','-1');
+          heading.focus();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

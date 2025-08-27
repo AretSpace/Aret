@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ARET — Password recovery</title>
+  <meta name="description" content="ARET — recover your password. Request a password reset link." />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Small page-specific tweaks */
+    .center-outer { min-height:72vh; display:flex; align-items:center; justify-content:center; padding:28px; }
+    .recover-card { max-width:520px; width:100%; border-radius:16px; padding:26px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); box-shadow:0 20px 60px rgba(3,6,12,0.6); }
+    .recover-card h2 { margin:0 0 6px 0; font-family:Cinzel,serif; font-size:24px; }
+    .recover-card p.lead { margin:0 0 12px 0; color:var(--muted); font-size:14px; }
+    .note { font-size:13px; color:var(--muted); margin-top:12px; }
+    .actions { display:flex; gap:10px; align-items:center; margin-top:14px; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+  <!-- decorative co-visual layers used across project -->
+  <div class="starfield" aria-hidden="true"></div>
+  <div class="nebula" aria-hidden="true"></div>
+
+  <!-- header (simple, consistent navigation) -->
+  <header style="position:fixed;inset:12px 12px auto 12px;z-index:30;display:flex;justify-content:space-between;align-items:center">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg width="36" height="36" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="10" fill="rgba(255,215,110,0.03)" stroke="rgba(255,215,110,0.08)"/><path d="M32 14 L44 30 L20 30 Z" fill="url(#g)"/><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#FFD36E"/><stop offset="1" stop-color="#4EE2C7"/></linearGradient></defs></svg>
+      <div style="font-family:Cinzel,serif;color:transparent;background:linear-gradient(90deg,var(--gold),var(--turq));-webkit-background-clip:text">ARET</div>
+    </div>
+
+    <nav aria-label="header" style="display:flex;gap:10px;align-items:center">
+      <a href="index.html" class="link">Home</a>
+      <a href="signup.html" class="link">Sign up</a>
+      <a href="login.html" class="link">Sign in</a>
+    </nav>
+  </header>
+
+  <!-- main content -->
+  <main class="center-outer" role="main">
+    <section class="recover-card" aria-labelledby="recover-title">
+      <h2 id="recover-title">Password recovery</h2>
+      <p class="lead">Enter your account email and we’ll send a secure password reset link if an account exists.</p>
+
+      <form id="recoverForm" novalidate>
+        <div style="margin-bottom:12px">
+          <label for="recoverEmail" style="display:block;font-size:13px;color:var(--muted);margin-bottom:8px">Email address</label>
+          <input id="recoverEmail" name="email" type="email" class="input" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn primary">Send recovery link</button>
+          <a href="login.html" class="link" style="align-self:center">Back to sign in</a>
+          <a href="signup.html" class="link" style="align-self:center">Create account</a>
+        </div>
+
+        <div id="recoverResult" role="status" aria-live="polite" class="note" style="margin-top:12px;display:block"></div>
+      </form>
+
+      <div class="note" style="margin-top:10px">
+        If you don't receive an email within a few minutes, check your spam folder. For account security we never disclose whether an email exists in our system.
+      </div>
+    </section>
+  </main>
+
+  <!-- Shared auth helpers: js/auth.js contains the hookRecover logic -->
+  <script src="js/auth.js" defer></script>
+
+  <!-- small enhancement: focus management -->
+  <script>
+    (function(){
+      window.addEventListener('load', function(){
+        const h = document.getElementById('recover-title');
+        if (h) { h.setAttribute('tabindex','-1'); h.focus(); }
+      });
+    })();
+  </script>
+</body>
+</html>

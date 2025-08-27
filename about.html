@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ARET — About</title>
+  <meta name="description" content="About ARET — mission, vision and the design language: cosmic + Ancient Egyptian." />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Page-specific styles */
+    .hero-small{min-height:36vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;position:relative}
+    .panel{max-width:1100px;margin:0 auto;padding:30px;border-radius:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px)}
+    .grid-2{display:grid;grid-template-columns:1fr;gap:18px}
+    @media(min-width:960px){.grid-2{grid-template-columns:1fr 360px}}
+    .kpi{display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.03)}
+    .timeline{display:flex;flex-direction:column;gap:10px}
+    .timeline .step{padding:12px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)}
+    .team-grid{display:grid;grid-template-columns:repeat(1,1fr);gap:12px}
+    @media(min-width:700px){.team-grid{grid-template-columns:repeat(3,1fr)}}
+    .member{padding:14px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02);text-align:center}
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  </style>
+</head>
+<body>
+  <div class="starfield" aria-hidden="true"></div>
+  <div class="nebula" aria-hidden="true"></div>
+
+  <!-- Header (same structure as other pages) -->
+  <header style="position:fixed;inset:12px 12px auto 12px;z-index:30;display:flex;justify-content:space-between;align-items:center">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg width="36" height="36" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="10" fill="rgba(255,215,110,0.03)" stroke="rgba(255,215,110,0.08)"/><path d="M32 14 L44 30 L20 30 Z" fill="url(#g)"/><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#FFD36E"/><stop offset="1" stop-color="#4EE2C7"/></linearGradient></defs></svg>
+      <div style="font-family:Cinzel,serif;color:transparent;background:linear-gradient(90deg,var(--gold),var(--turq));-webkit-background-clip:text">ARET</div>
+    </div>
+
+    <nav class="nav" role="navigation" aria-label="Primary">
+      <a href="index.html" class="link">Home</a>
+      <a href="about.html" class="link">About</a>
+      <a href="signup.html" class="link">Sign up</a>
+      <a href="login.html" class="link">Sign in</a>
+      <a href="recover.html" class="link">Recover</a>
+      <a href="dashboard.html" class="link">Dashboard</a>
+    </nav>
+  </header>
+
+  <main style="padding:86px 18px 40px;">
+    <!-- Hero -->
+    <section class="hero-small" aria-label="About hero">
+      <div class="panel" role="article">
+        <h1 style="margin:0;font-family:Cinzel,serif;letter-spacing:2px">About ARET</h1>
+        <p style="margin:8px 0 0;color:var(--muted)">ARET combines rigorous competition mechanics with a design language drawn from cosmic imagery and Ancient Egyptian symbolism. The goal: produce deep learning experiences that reward reasoning, creativity and elegant solutions.</p>
+        <div class="cta-row">
+          <button class="cta primary" onclick="location.href='signup.html'">Join now</button>
+          <a class="cta ghost" href="contact.html">Contact us</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core content grid -->
+    <section style="max-width:1200px;margin:28px auto;display:grid;grid-template-columns:1fr;gap:18px">
+      <div class="grid-2 panel">
+        <div>
+          <h2 style="margin-top:0">Mission & vision</h2>
+          <p style="color:var(--muted)">Our mission is to build a competition platform that trains reasoning (not rote), nurtures curiosity, and respects culture. We imagine problems that reward deep thought and pattern recognition, and provide structured feedback so competitors improve with each round.</p>
+
+          <h3 style="margin-top:18px">Principles</h3>
+          <ul style="color:var(--muted);margin:8px 0 0 18px">
+            <li>Fair scoring and transparent leaderboards</li>
+            <li>Problems that scale in depth, not length</li>
+            <li>Design that balances performance with visual delight</li>
+          </ul>
+        </div>
+
+        <aside style="display:flex;flex-direction:column;gap:12px">
+          <div class="kpi">
+            <div style="font-weight:700">Active participants</div>
+            <div style="font-size:13px;color:var(--muted)">2,450+</div>
+          </div>
+
+          <div class="kpi">
+            <div style="font-weight:700">Seasonal rounds</div>
+            <div style="font-size:13px;color:var(--muted)">6 planned for 2025</div>
+          </div>
+
+          <div class="kpi">
+            <div style="font-weight:700">Avg time to solve</div>
+            <div style="font-size:13px;color:var(--muted)">~25 minutes</div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Timeline & Team -->
+      <div class="panel">
+        <h3 style="margin-top:0">Roadmap</h3>
+        <div class="timeline" aria-hidden="false">
+          <div class="step"><strong>Phase 0 — Foundation</strong> · Design system, auth, initial rounds (Completed).</div>
+          <div class="step"><strong>Phase 1 — Growth</strong> · More rounds, leaderboard, coaching reports (Q4 2025).</div>
+          <div class="step"><strong>Phase 2 — Platform</strong> · Course builder, analytics, teacher accounts (2026+).</div>
+        </div>
+
+        <h3 style="margin-top:18px">Team & contributors</h3>
+        <div class="team-grid" role="list">
+          <div class="member" role="listitem">
+            <div style="font-weight:700">Mahmoud S.</div>
+            <div style="color:var(--muted);font-size:13px">Founder / UI & product</div>
+          </div>
+
+          <div class="member" role="listitem">
+            <div style="font-weight:700">Design (TBD)</div>
+            <div style="color:var(--muted);font-size:13px">Visual system & icons</div>
+          </div>
+
+          <div class="member" role="listitem">
+            <div style="font-weight:700">Platform (TBD)</div>
+            <div style="color:var(--muted);font-size:13px">Backend & infra</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0">Contact & collaboration</h3>
+        <p style="color:var(--muted)">If you want to contribute problems, translate materials, or integrate ARET into a learning program, contact us.</p>
+        <div style="margin-top:12px">
+          <a href="contact.html" class="link">Contact form</a>
+        </div>
+
+        <h4 style="margin-top:18px">Design language</h4>
+        <p style="color:var(--muted)">Colors: deep cosmic blues, gold and turquoise highlights. Imagery: faint pyramids, Eye-of-Horus motifs, and soft nebula overlays to keep visual focus on content.</p>
+      </div>
+    </section>
+
+    <footer style="max-width:1200px;margin:22px auto;text-align:center;color:var(--muted)">
+      ARET © <span id="year"></span> · <a href="login.html" class="link">Sign in</a> · <a href="signup.html" class="link">Sign up</a>
+    </footer>
+  </main>
+
+  <script src="js/auth.js" defer></script>
+  <script>
+    (function(){
+      document.getElementById('year').textContent = new Date().getFullYear();
+      // small entrance animation for panels
+      document.querySelectorAll('.panel').forEach((p,i)=> {
+        p.style.opacity = 0; p.style.transform = 'translateY(10px)';
+        setTimeout(()=> { p.style.transition = 'all .6s ease'; p.style.opacity = 1; p.style.transform = 'none'; }, 120 + i*80);
+      });
+    })();
+  </script>
+</body>
+</html>

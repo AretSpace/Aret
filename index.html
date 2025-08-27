@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ARET — Home</title>
+  <meta name="description" content="ARET — cosmic + Ancient Egyptian competition portal. Enter the portal to compete, learn and track progress." />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Page-specific styles: keep small and modular */
+    :root{--hero-h:72vh;--glass:rgba(255,255,255,0.04);--glass-border:rgba(255,255,255,0.06)}
+    body{min-height:100vh;display:flex;flex-direction:column}
+    header.site-header{position:fixed;inset:0 0 auto 0;z-index:30;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(3,6,12,0.18),transparent);border-bottom:1px solid rgba(255,255,255,0.02)}
+    .nav{display:flex;gap:12px;align-items:center}
+    .nav a{color:var(--muted);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s}
+    .nav a:hover{color:#fff;transform:translateY(-2px)}
+    .brand-inline{display:flex;gap:12px;align-items:center}
+    .brand-inline .title{font-family:Cinzel,serif;font-size:18px;color:transparent;background:linear-gradient(90deg,var(--gold),var(--turq));-webkit-background-clip:text}
+    .hero{min-height:var(--hero-h);display:flex;align-items:center;justify-content:center;padding:24px;position:relative;overflow:hidden}
+    .hero-inner{width:100%;max-width:1200px;display:grid;grid-template-columns:1fr;gap:20px;align-items:center}
+    @media(min-width:960px){.hero-inner{grid-template-columns:1fr 420px}}
+    .hero-card{background:var(--glass);border-radius:18px;padding:28px;border:1px solid var(--glass-border);box-shadow:0 20px 60px rgba(3,6,12,0.6);backdrop-filter:blur(6px)}
+    .hero h1{margin:0;font-family:Cinzel,serif;font-size:34px;letter-spacing:2px}
+    .hero p.lead{margin:10px 0 18px;color:var(--muted);font-size:15px}
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+    .cta{padding:12px 18px;border-radius:12px;cursor:pointer;font-weight:700;display:inline-flex;align-items:center;gap:10px;border:none}
+    .cta.primary{background:linear-gradient(90deg,var(--gold),var(--turq));color:#071014}
+    .cta.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    .panel-visual{display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center}
+    .orb{width:220px;height:220px;border-radius:999px;background:radial-gradient(circle at 30% 30%, rgba(78,226,199,0.14), rgba(255,211,110,0.06)), linear-gradient(180deg, rgba(255,215,110,0.04), rgba(78,226,199,0.03));display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.04);box-shadow:0 20px 60px rgba(3,6,12,0.5)}
+    .orb .hieroglyph{font-family:Cinzel,serif;font-size:48px;color:transparent;background:linear-gradient(90deg,var(--gold),var(--turq));-webkit-background-clip:text}
+    /* Feature grid */
+    .features{display:grid;grid-template-columns:repeat(1,1fr);gap:16px;padding:28px;max-width:1200px;margin:18px auto}
+    @media(min-width:800px){.features{grid-template-columns:repeat(3,1fr)}}
+    .feature{background:var(--glass);border-radius:14px;padding:18px;border:1px solid var(--glass-border);transform:translateY(14px);opacity:0;transition:all .6s;will-change:transform,opacity}
+    .feature.show{transform:none;opacity:1}
+    .feature h4{margin:0 0 8px 0}
+    .feature p{margin:0;color:var(--muted);font-size:14px}
+    /* Footer */
+    footer.site-footer{margin-top:auto;padding:28px;text-align:center;color:var(--muted)}
+    /* floating glyphs */
+    .float-glyph{position:absolute;opacity:0.08;pointer-events:none;will-change:transform}
+    .glyph-1{left:6%;top:18%;width:120px}
+    .glyph-2{right:4%;top:12%;width:80px}
+    .glyph-3{right:8%;bottom:6%;width:140px}
+    /* small utilities */
+    .center{text-align:center}
+    /* mobile spacing */
+    @media(max-width:599px){.hero h1{font-size:26px}.orb{width:160px;height:160px}}
+  </style>
+</head>
+<body>
+  <!-- decorative backgrounds: still use starfield & nebula for cohesive look -->
+  <div class="starfield" aria-hidden="true"></div>
+  <div class="nebula" aria-hidden="true"></div>
+
+  <!-- Site header -->
+  <header class="site-header" role="banner">
+    <div class="brand-inline" aria-hidden="false">
+      <svg width="40" height="40" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="10" fill="rgba(255,215,110,0.03)" stroke="rgba(255,215,110,0.08)"/><path d="M32 14 L44 30 L20 30 Z" fill="url(#g)"/><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#FFD36E"/><stop offset="1" stop-color="#4EE2C7"/></linearGradient></defs></svg>
+      <div>
+        <div class="title">ARET</div>
+        <div style="font-size:11px;color:var(--muted)">Cosmic • Hieroglyphic</div>
+      </div>
+    </div>
+
+    <nav class="nav" role="navigation" aria-label="Primary">
+  <a href="index.html" class="link">Home</a>
+  <a href="about.html" class="link">About</a>
+  <a href="signup.html" class="link">Sign up</a>
+  <a href="login.html" class="link">Sign in</a>
+  <a href="recover.html" class="link">Recover</a>
+  <a href="dashboard.html" class="link">Dashboard</a>
+</nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" role="region" aria-label="Hero">
+    <div class="hero-inner">
+      <div class="hero-card" aria-hidden="false">
+        <h1>Enter the ARET portal</h1>
+        <p class="lead">Aret fuses cosmic patterns with timeless hieroglyphics. Compete in rounds, solve puzzles, and climb the leaderboard — one elegant move at a time.</p>
+
+        <div class="cta-row">
+          <button class="cta primary" id="ctaSignIn" aria-label="Sign in">Sign in</button>
+          <button class="cta ghost" id="ctaSignUp" aria-label="Create account">Create account</button>
+          <button class="cta ghost" id="ctaDashboard" aria-label="Open dashboard">Open dashboard</button>
+        </div>
+
+        <div style="margin-top:18px;display:flex;gap:12px;align-items:center">
+          <div style="display:flex;gap:8px;align-items:center">
+            <div style="width:10px;height:10px;border-radius:99px;background:var(--turq)"></div>
+            <div style="font-size:13px;color:var(--muted)">Live puzzles</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;margin-left:12px">
+            <div style="width:10px;height:10px;border-radius:99px;background:var(--gold)"></div>
+            <div style="font-size:13px;color:var(--muted)">Season leaderboard</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-visual">
+        <div class="orb" id="orb" role="img" aria-label="ARET emblem">
+          <div class="hieroglyph">𓂀</div>
+        </div>
+        <div class="center" style="color:var(--muted);font-size:13px">Cosmic motions · Ancient marks</div>
+      </div>
+    </div>
+
+    <!-- Floating decorative glyphs (SVG paths for style) -->
+    <svg class="float-glyph glyph-1" viewBox="0 0 120 120" aria-hidden="true"><path d="M10 80 L60 10 L110 80 Z" fill="none" stroke="rgba(255,215,110,0.12)" /></svg>
+    <svg class="float-glyph glyph-2" viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="24" r="18" stroke="rgba(78,226,199,0.12)" fill="none"/></svg>
+    <svg class="float-glyph glyph-3" viewBox="0 0 140 140" aria-hidden="true"><path d="M20 100 C40 60,100 60,120 100" stroke="rgba(255,215,110,0.08)" fill="none"/></svg>
+  </section>
+
+  <!-- Features -->
+  <section class="features" aria-label="Site features">
+    <article class="feature" data-reveal>
+      <h4>Compete in rounds</h4>
+      <p>Regularly scheduled competitions with ranking, feedback and real-time leaderboards.</p>
+    </article>
+
+    <article class="feature" data-reveal>
+      <h4>Practice & puzzles</h4>
+      <p>Progressive puzzles and mission paths crafted to improve deep thinking and pattern recognition.</p>
+    </article>
+
+    <article class="feature" data-reveal>
+      <h4>Profile & analytics</h4>
+      <p>Track progress, watch rating trends and export performance reports for a coach or your own study.</p>
+    </article>
+  </section>
+
+  <footer class="site-footer">
+    ARET © <span id="year"></span> — Crafted for curiosity, rigor and fair competition. <a href="login.html" class="link">Sign in</a>
+  </footer>
+
+  <!-- Shared auth helpers -->
+  <script src="js/auth.js" defer></script>
+
+  <!-- Page-specific script for animation & navigation -->
+  <script>
+    (function(){
+      // Utilities
+      const go = (href) => { location.href = href; };
+
+      // CTA wiring (exact filenames)
+      document.getElementById('ctaSignIn').addEventListener('click', () => go('login.html'));
+      document.getElementById('ctaSignUp').addEventListener('click', () => go('signup.html'));
+      document.getElementById('ctaDashboard').addEventListener('click', () => go('dashboard.html'));
+
+      // Orb subtle motion (mouse parallax + idle float)
+      const orb = document.getElementById('orb');
+      let mouseX = 0, mouseY = 0;
+      window.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth) - 0.5;
+        mouseY = (e.clientY / window.innerHeight) - 0.5;
+        orb.style.transform = `translate(${mouseX * 10}px, ${mouseY * 8}px) rotate(${mouseX * 12}deg)`;
+      });
+      // idle float
+      let t = 0;
+      function floatLoop(){
+        t += 0.01;
+        const x = Math.sin(t) * 6;
+        const y = Math.cos(t * 0.8) * 4;
+        orb.style.transform = `translate(${x}px, ${y}px) ${orb.style.transform.includes('rotate') ? orb.style.transform.split('rotate')[1] : ''}`;
+        requestAnimationFrame(floatLoop);
+      }
+      requestAnimationFrame(floatLoop);
+
+      // Reveal animations: features scroll into view
+      const reveals = document.querySelectorAll('[data-reveal]');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('show');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.18 });
+      reveals.forEach(r => io.observe(r));
+
+      // Floating glyphs animation loop (slow rotate)
+      const glyphs = document.querySelectorAll('.float-glyph');
+      let angle = 0;
+      function glyphLoop(){
+        angle += 0.08;
+        glyphs.forEach((g, i) => {
+          const offset = (i+1) * 8;
+          g.style.transform = `rotate(${angle + offset}deg) translateZ(0)`;
+        });
+        requestAnimationFrame(glyphLoop);
+      }
+      requestAnimationFrame(glyphLoop);
+
+      // Accessibility: focus main heading on load
+      window.addEventListener('load', () => {
+        document.getElementById('year').textContent = new Date().getFullYear();
+        const h = document.querySelector('.hero h1');
+        if (h) { h.setAttribute('tabindex','-1'); h.focus(); }
+      });
+
+    })();
+  </script>
+</body>
+</html>
