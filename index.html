@@ -2,41 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <!-- Mobile-first meta (safe-area for devices with notch) -->
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>ARET — Home</title>
-  <meta name="description" content="ARET — cosmic + Ancient Egyptian competition portal. Enter the portal to compete, learn and track progress." />
-  <!-- Fonts (optional external resource) -->
+  <meta name="description" content="ARET — cosmic + Ancient Egyptian competition portal. Compete, learn and track progress." />
+
+  <!-- Performance: preload and preconnect for fonts (optional) -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&display=swap" as="style">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-  <!-- ===== Embedded styles: main page only (no external CSS) ===== -->
+  <!-- ===== Inline CSS: self-contained, responsive, accessible ===== -->
   <style>
+    /* --------- Theme tokens (easy to tweak) --------- */
     :root{
-      --bg-1:#040214;
-      --bg-2:#07142a;
-      --gold:#FFD36E;
-      --turq:#4EE2C7;
-      --muted:#9aa6b2;
-      --glass: rgba(255,255,255,0.04);
+      --bg-deep: #040214;
+      --bg-mid:  #07142a;
+      --gold:    #FFD36E;
+      --turq:    #4EE2C7;
+      --muted:   #9aa6b2;
+      --glass:   rgba(255,255,255,0.04);
       --glass-border: rgba(255,255,255,0.06);
+      --accent-grad: linear-gradient(90deg,var(--gold),var(--turq));
       --max-width:1200px;
       --pad:16px;
-      --fs-sm:14px;
-      --fs-md:16px;
       --safe-top: env(safe-area-inset-top);
       --safe-bottom: env(safe-area-inset-bottom);
+      --shadow-1: 0 10px 30px rgba(3,6,12,0.55);
+      --radius-lg:14px;
     }
 
-    /* --- Basic reset & body --- */
-    *{box-sizing:border-box}
+    /* --------- Reset + base --------- */
+    *,*::before,*::after{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family:Poppins, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      font-family: Poppins, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       color:#eaf6fb;
       background:
         radial-gradient(1200px 600px at 10% 10%, rgba(78,226,199,0.02), transparent),
-        linear-gradient(180deg,var(--bg-1) 0%, var(--bg-2) 60%, #000 100%);
+        linear-gradient(180deg,var(--bg-deep) 0%, var(--bg-mid) 60%, #000 100%);
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
       min-height:100vh;
@@ -44,179 +49,166 @@
       flex-direction:column;
       align-items:stretch;
       overflow-x:hidden;
-      font-size:var(--fs-md);
+      font-size:16px;
+      line-height:1.4;
     }
 
-    /* decorative layers (starfield + nebula) */
-    .starfield{position:fixed;inset:0;z-index:0;pointer-events:none;
+    /* Decorative layers (light and cheap) */
+    .starfield{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.5;
       background-image:
-        radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%),
-        radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 100%),
-        radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%);
-      opacity:0.45; filter:drop-shadow(0 0 6px rgba(78,226,199,0.04)); animation:twinkle 8s linear infinite;}
-    @keyframes twinkle{0%{opacity:0.3}50%{opacity:0.46}100%{opacity:0.3}}
-    .nebula{position:fixed;inset:0;z-index:0;pointer-events:none;
-      background:radial-gradient(circle at 20% 20%, rgba(78,226,199,0.04), transparent 8%),
-                 radial-gradient(circle at 80% 60%, rgba(255,211,110,0.03), transparent 12%);
-      mix-blend-mode:screen; animation:drift 20s linear infinite;}
-    @keyframes drift{0%{transform:translateX(-8px) translateY(0)}50%{transform:translateX(8px) translateY(-8px)}100%{transform:translateX(-8px) translateY(0)}}
+        radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0)),
+        radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.7), rgba(255,255,255,0));
+      filter: drop-shadow(0 0 6px rgba(78,226,199,0.04));}
+    .nebula{position:fixed;inset:0;z-index:0;pointer-events:none;background:
+      radial-gradient(circle at 20% 20%, rgba(78,226,199,0.04), transparent 8%),
+      radial-gradient(circle at 80% 60%, rgba(255,211,110,0.03), transparent 12%);mix-blend-mode:screen;}
 
-    /* --- Header --- */
+    /* --------- Header & nav --------- */
     .site-header{
       position:fixed;
-      top:0; left:0; right:0;
-      z-index:40;
+      top:0;left:0;right:0;
+      z-index:60;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
       padding: calc(10px + var(--safe-top)) var(--pad);
       background: linear-gradient(180deg, rgba(3,6,12,0.18), transparent);
-      border-bottom:1px solid rgba(255,255,255,0.02);
+      border-bottom:1px solid rgba(255,255,255,0.03);
       backdrop-filter: blur(6px);
     }
-    .brand-inline{display:flex;gap:12px;align-items:center}
-    .brand-inline svg{width:40px;height:40px;flex-shrink:0}
-    .brand-title{font-family:Cinzel,serif;font-size:18px;color:transparent;background:linear-gradient(90deg,var(--gold),var(--turq));-webkit-background-clip:text}
-    .brand-sub{font-size:12px;color:var(--muted)}
+    .brand{display:flex;gap:12px;align-items:center}
+    .brand svg{width:40px;height:40px;flex-shrink:0}
+    .brand-title{font-family:Cinzel,serif;font-size:18px;color:transparent;background:var(--accent-grad);-webkit-background-clip:text;background-clip:text}
+    .brand-sub{font-size:13px;color:var(--muted)}
 
-    /* nav */
+    /* Primary nav */
     .nav{display:flex;gap:8px;align-items:center}
-    .nav a{color:var(--muted);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .14s;font-size:var(--fs-sm)}
-    .nav a:hover,.nav a:focus{color:#fff;transform:translateY(-2px)}
-
-    /* mobile nav toggle */
-    .nav-toggle{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--muted);cursor:pointer}
+    .nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:600;
+      padding:8px 12px;
+      border-radius:10px;
+      transition: transform .12s ease, color .12s ease, background .12s ease;
+      font-size:15px;
+    }
+    .nav a:hover,.nav a:focus{color:#fff;transform:translateY(-3px)}
+    /* desktop: hide toggle */
+    .nav-toggle{display:none;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);width:44px;height:44px;align-items:center;justify-content:center;cursor:pointer}
     .nav-toggle svg{width:20px;height:20px}
 
-    /* collapsed overlay nav for small screens */
-    @media (max-width:799px){
-      .nav{
-        position:fixed;
-        left:0; right:0;
-        top:64px;
-        bottom:0;
-        display:flex;
-        flex-direction:column;
-        gap:0;
-        padding:12px;
-        background:linear-gradient(180deg, rgba(3,6,12,0.96), rgba(3,6,12,0.98));
-        transform:translateY(-120%);
-        opacity:0;
-        pointer-events:none;
-        transition: transform .28s ease, opacity .18s;
-        z-index:60;
-        overflow:auto;
-      }
+    /* Mobile overlay nav (full-screen, accessible) */
+    @media (max-width:900px){
+      .nav{position:fixed;left:0;right:0;top:64px;bottom:0;display:flex;flex-direction:column;gap:0;padding:12px;background:linear-gradient(180deg, rgba(3,6,12,0.96), rgba(3,6,12,0.98));transform:translateY(-120%);opacity:0;pointer-events:none;transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .14s;z-index:70;overflow:auto}
       .nav.open{transform:translateY(0);opacity:1;pointer-events:auto}
-      .nav a{display:block;padding:12px 14px;border-radius:10px}
+      .nav a{padding:14px 16px;font-size:16px}
       .nav-toggle{display:flex}
     }
-    @media (min-width:800px){
-      .nav{position:static;transform:none;opacity:1;pointer-events:auto}
-      .nav-toggle{display:none}
-    }
 
-    /* --- Main layout / hero --- */
-    main{margin-top:calc(64px + var(--safe-top)); z-index:10;}
-    .hero{
-      padding:20px min(6vw,40px);
-      min-height:68vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-    }
+    /* Skip link for keyboard users */
+    .skip-link{position:absolute;left:8px;top:8px;background:#07142a;color:#fff;padding:8px 12px;border-radius:8px;transform:translateY(-120%);transition:transform .12s;z-index:80}
+    .skip-link:focus{transform:translateY(0);outline:3px solid rgba(78,226,199,0.12)}
 
+    /* --------- Main / hero --------- */
+    main{margin-top:calc(64px + var(--safe-top));z-index:10}
+    .hero{padding:28px 18px;min-height:70vh;display:flex;align-items:center;justify-content:center;position:relative}
     .container{width:100%;max-width:var(--max-width);margin:0 auto}
-    .hero-inner{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: clamp(12px, 2.2vw, 28px);
-      align-items:center;
-      width:100%;
-    }
+    .hero-grid{display:grid;grid-template-columns: 1fr 420px; gap:28px;align-items:center}
+    @media (max-width:1000px){ .hero-grid{grid-template-columns:1fr; } }
 
     .card{
       background:var(--glass);
-      border-radius:14px;
-      padding:18px;
+      border-radius:var(--radius-lg);
+      padding:22px;
       border:1px solid var(--glass-border);
-      box-shadow:0 16px 50px rgba(3,6,12,0.6);
+      box-shadow:var(--shadow-1);
     }
     .hero-card{padding:20px}
-    .hero h1{font-family:Cinzel, serif; font-size:clamp(1.35rem, 4vw, 2.6rem); margin:0 0 8px 0; line-height:1.02}
-    .lead{margin:6px 0 14px;color:var(--muted);font-size:var(--fs-sm)}
+    h1{font-family:Cinzel,serif;font-size:clamp(1.4rem, 4vw, 2.6rem);margin:0 0 8px 0}
+    p.lead{margin:6px 0 14px;color:var(--muted);font-size:15px}
 
-    /* CTAs */
-    .cta-row{display:flex;gap:12px;flex-wrap:wrap}
-    .cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:700;min-height:48px}
-    .cta.primary{background:linear-gradient(90deg,var(--gold),var(--turq));color:#071014}
+    /* CTA layout */
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 18px;border-radius:12px;border:none;cursor:pointer;font-weight:700;min-height:48px;transition:transform .12s ease, box-shadow .12s}
+    .cta.primary{background:var(--accent-grad);color:#071014;box-shadow:0 10px 30px rgba(78,226,199,0.06)}
     .cta.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+    .cta:active{transform:translateY(1px)}
 
-    /* orb (inline SVG wrapper) */
-    .panel-visual{display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center}
-    .orb{width:min(46vw,320px);aspect-ratio:1/1;display:grid;place-items:center; margin-inline:auto; max-width:84vw;max-height:48vh;transition:transform .35s ease}
+    /* Visual emblem (inline SVG wrapper) */
+    .visual {display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+    .orb{width:min(46vw,340px);aspect-ratio:1/1;max-width:86vw;max-height:60vh;display:grid;place-items:center;transition:transform .35s ease}
 
-    /* feature grid */
-    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;padding:18px}
-    .feature{background:var(--glass);padding:16px;border-radius:12px;border:1px solid var(--glass-border);transform:translateY(14px);opacity:0;transition:all .6s;will-change:transform,opacity}
+    /* feature cards */
+    .features{display:grid;grid-template-columns:repeat(auto-fit, minmax(220px,1fr));gap:18px;padding:26px 18px}
+    .feature{background:var(--glass);padding:16px;border-radius:12px;border:1px solid var(--glass-border);transform:translateY(12px);opacity:0;transition:all .5s ease}
     .feature.show{transform:none;opacity:1}
     .feature h4{margin:0 0 8px 0}
-    .feature p{margin:0;color:var(--muted);font-size:var(--fs-sm)}
+    .feature p{margin:0;color:var(--muted);font-size:14px}
 
     /* footer */
-    footer{padding:24px;text-align:center;color:var(--muted);padding-bottom:calc(18px + var(--safe-bottom))}
+    footer{padding:26px 18px;text-align:center;color:var(--muted);padding-bottom:calc(18px + var(--safe-bottom))}
 
-    /* Responsive mobile friendly tweaks */
-    @media (max-width:520px){
-      .hero{min-height:60vh;padding:14px}
-      .hero-card{padding:14px;border-radius:12px;box-shadow:0 10px 30px rgba(3,6,12,0.55)}
+    /* --------- Responsiveness / Mobile UX tweaks --------- */
+    @media (max-width:900px){
+      .hero{min-height:62vh;padding:18px 12px}
+      .card{padding:16px;border-radius:12px}
       .cta-row{flex-direction:column}
-      .cta{width:100%;min-height:56px;padding:14px;font-size:16px;border-radius:10px}
-      .brand-inline .title{font-size:18px}
-      .brand-inline svg{width:34px;height:34px}
-      .nav{top:calc(64px + var(--safe-top));}
-      .features{padding-inline:12px}
+      .cta{width:100%;min-height:56px}
+      .orb{max-height:48vh}
+    }
+    @media (max-width:420px){
+      h1{font-size:clamp(1.2rem,6.4vw,1.9rem)}
+      .brand-title{font-size:16px}
+      .nav a{font-size:15px}
     }
 
-    /* reduced-motion */
+    /* Reduced motion for users who prefer it */
     @media (prefers-reduced-motion: reduce){
-      .starfield, .nebula, .orb, .feature{animation:none !important; transition:none !important}
+      .orb,.feature{animation:none !important;transition:none !important}
     }
 
-    /* Accessibility focus */
-    a:focus, button:focus, input:focus{outline:3px solid rgba(78,226,199,0.12);outline-offset:2px}
+    /* focus styles */
+    a:focus,button:focus,input:focus{outline:3px solid rgba(78,226,199,0.12);outline-offset:2px}
 
-    /* small utility */
-    .muted{color:var(--muted)}
+    /* small utilities used by JS */
+    .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   </style>
-  <!-- ===== end embedded styles ===== -->
+  <!-- ===== end inline CSS ===== -->
 </head>
 <body>
+  <!-- Skip link for keyboard users -->
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
   <!-- decorative layers -->
   <div class="starfield" aria-hidden="true"></div>
   <div class="nebula" aria-hidden="true"></div>
 
-  <!-- Header -->
-  <header class="site-header" role="banner">
-    <div class="brand-inline" aria-hidden="false">
-      <svg viewBox="0 0 64 64" aria-hidden="true">
+  <!-- HEADER -->
+  <header class="site-header" role="banner" aria-label="Primary header">
+    <div class="brand" aria-hidden="false">
+      <!-- simple logo -->
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
         <rect x="2" y="2" width="60" height="60" rx="10" fill="rgba(255,215,110,0.03)" stroke="rgba(255,215,110,0.08)"/>
-        <path d="M32 14 L44 30 L20 30 Z" fill="url(#g)"/>
-        <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#FFD36E"/><stop offset="1" stop-color="#4EE2C7"/></linearGradient></defs>
+        <path d="M32 14 L44 30 L20 30 Z" fill="url(#g-small)"/>
+        <defs>
+          <linearGradient id="g-small" x1="0" x2="1"><stop offset="0" stop-color="#FFD36E"/><stop offset="1" stop-color="#4EE2C7"/></linearGradient>
+        </defs>
       </svg>
+
       <div>
         <div class="brand-title">ARET</div>
         <div class="brand-sub">Cosmic · Hieroglyphic</div>
       </div>
     </div>
 
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <!-- Mobile toggle (visible on small screens) -->
+    <button class="nav-toggle" id="navToggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Open navigation">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
 
-    <nav class="nav" role="navigation" aria-label="Primary">
+    <!-- Primary navigation -->
+    <nav id="primary-nav" class="nav" role="navigation" aria-label="Primary navigation">
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
       <a href="signup.html">Sign up</a>
@@ -226,209 +218,284 @@
     </nav>
   </header>
 
-  <!-- Main content -->
-  <main>
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="card hero-card" aria-labelledby="heroTitle">
-          <h1 id="heroTitle">Enter the ARET portal</h1>
-          <p class="lead">Aret fuses cosmic patterns with ancient hieroglyphics. Compete in rounds, solve puzzles, and climb the leaderboard — one elegant move at a time.</p>
+  <!-- MAIN -->
+  <main id="main-content" tabindex="-1">
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="container">
+        <!-- Hero grid: left content, right visual -->
+        <div class="hero-grid" role="region" aria-label="Hero area">
+          <!-- content card -->
+          <div class="card hero-card" aria-hidden="false">
+            <h1 id="hero-heading">Enter the ARET portal</h1>
+            <p class="lead">Aret blends cosmic motifs with ancient glyphs. Compete in rounds, solve puzzles, and climb the leaderboard — one elegant move at a time.</p>
 
-          <div class="cta-row" role="toolbar" aria-label="Primary actions">
-            <button class="cta primary" id="ctaSignIn">Sign in</button>
-            <button class="cta ghost" id="ctaSignUp">Create account</button>
-            <button class="cta ghost" id="ctaDashboard">Open dashboard</button>
+            <div class="cta-row" role="toolbar" aria-label="Primary actions">
+              <button class="cta primary" id="btn-signin" aria-label="Sign in to ARET">Sign in</button>
+              <button class="cta ghost" id="btn-signup" aria-label="Create an ARET account">Create account</button>
+              <button class="cta ghost" id="btn-dashboard" aria-label="Open the Dashboard">Open dashboard</button>
+            </div>
+
+            <div style="margin-top:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+              <div style="display:flex;gap:8px;align-items:center">
+                <span style="width:10px;height:10px;border-radius:99px;background:var(--turq);display:inline-block"></span>
+                <span class="brand-sub">Live puzzles</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;margin-left:12px">
+                <span style="width:10px;height:10px;border-radius:99px;background:var(--gold);display:inline-block"></span>
+                <span class="brand-sub">Season leaderboard</span>
+              </div>
+            </div>
           </div>
 
-          <div style="margin-top:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-            <div style="display:flex;gap:8px;align-items:center">
-              <div style="width:10px;height:10px;border-radius:99px;background:var(--turq)"></div>
-              <div class="muted">Live puzzles</div>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center;margin-left:12px">
-              <div style="width:10px;height:10px;border-radius:99px;background:var(--gold)"></div>
-              <div class="muted">Season leaderboard</div>
-            </div>
-          </div>
-        </div>
+          <!-- visual emblem -->
+          <div class="visual" aria-hidden="false">
+            <!-- Accessible decorative SVG emblem -->
+            <svg class="orb" viewBox="0 0 320 320" role="img" aria-label="ARET emblem" focusable="false" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="neb2" cx="30%" cy="30%" r="60%">
+                  <stop offset="0%" stop-color="#4EE2C7" stop-opacity="0.28"/>
+                  <stop offset="55%" stop-color="#FFD36E" stop-opacity="0.12"/>
+                  <stop offset="100%" stop-color="#07142a" stop-opacity="0.02"/>
+                </radialGradient>
+                <linearGradient id="gt" x1="0" x2="1"><stop offset="0" stop-color="#FFD36E"/><stop offset="1" stop-color="#4EE2C7"/></linearGradient>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
 
-        <!-- Inline SVG emblem — no external assets required -->
-        <div class="panel-visual" aria-hidden="false">
-          <svg class="orb" viewBox="0 0 320 320" role="img" aria-label="ARET emblem" focusable="false" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="neb" cx="30%" cy="30%" r="60%">
-                <stop offset="0%" stop-color="#4EE2C7" stop-opacity="0.28"/>
-                <stop offset="55%" stop-color="#FFD36E" stop-opacity="0.12"/>
-                <stop offset="100%" stop-color="#07142a" stop-opacity="0.02"/>
-              </radialGradient>
-              <linearGradient id="goldTurq" x1="0" x2="1">
-                <stop offset="0" stop-color="#FFD36E"/>
-                <stop offset="1" stop-color="#4EE2C7"/>
-              </linearGradient>
-              <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="6" result="b"/>
-                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            </defs>
-
-            <!-- nebula -->
-            <circle cx="160" cy="160" r="150" fill="url(#neb)" />
-
-            <!-- concentric guide rings -->
-            <g stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none">
-              <circle cx="160" cy="160" r="112"/>
-              <circle cx="160" cy="160" r="84"/>
-              <circle cx="160" cy="160" r="56"/>
-            </g>
-
-            <!-- eye glyph -->
-            <g transform="translate(0,-6)" filter="url(#softGlow)">
-              <path d="M80 160 C110 120, 210 120, 240 160 C210 200,110 200,80 160 Z" fill="none" stroke="url(#goldTurq)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="160" cy="160" r="18" fill="url(#goldTurq)" />
-              <g fill="#FFD36E" opacity="0.9">
-                <circle cx="112" cy="122" r="2.4"/>
-                <circle cx="208" cy="118" r="2.1"/>
-                <circle cx="130" cy="205" r="1.6"/>
+              <circle cx="160" cy="160" r="150" fill="url(#neb2)" />
+              <g stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none">
+                <circle cx="160" cy="160" r="112"/>
+                <circle cx="160" cy="160" r="84"/>
+                <circle cx="160" cy="160" r="56"/>
               </g>
-            </g>
 
-            <!-- subtle pyramid silhouette -->
-            <path d="M60 240 L160 120 L260 240 Z" fill="rgba(7,20,42,0.06)"/>
+              <g transform="translate(0,-6)" filter="url(#glow)">
+                <path d="M80 160 C110 120, 210 120, 240 160 C210 200,110 200,80 160 Z" fill="none" stroke="url(#gt)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="160" cy="160" r="18" fill="url(#gt)"/>
+                <g fill="#FFD36E" opacity="0.9">
+                  <circle cx="112" cy="122" r="2.4"/>
+                  <circle cx="208" cy="118" r="2.1"/>
+                  <circle cx="130" cy="205" r="1.6"/>
+                </g>
+              </g>
 
-            <!-- outer ring -->
-            <circle cx="160" cy="160" r="152" fill="none" stroke="url(#goldTurq)" stroke-opacity="0.06" stroke-width="6"/>
-          </svg>
+              <path d="M60 240 L160 120 L260 240 Z" fill="rgba(7,20,42,0.06)"/>
+              <circle cx="160" cy="160" r="152" fill="none" stroke="url(#gt)" stroke-opacity="0.06" stroke-width="6"/>
+            </svg>
 
-          <div class="muted" style="font-size:var(--fs-sm)">Cosmic motions · Ancient marks</div>
+            <div class="brand-sub" aria-hidden="true">Cosmic motions · Ancient marks</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="features" aria-label="Site features">
+    <!-- Features -->
+    <section class="features" aria-label="Key features">
       <article class="feature" data-reveal>
         <h4>Compete in rounds</h4>
-        <p>Regularly scheduled competitions with ranking, feedback and real-time leaderboards.</p>
+        <p>Frequent competitions with transparent scoring and leaderboard feedback.</p>
       </article>
 
       <article class="feature" data-reveal>
         <h4>Practice & puzzles</h4>
-        <p>Progressive puzzles and mission paths crafted to improve deep thinking and pattern recognition.</p>
+        <p>Problem sets that build pattern recognition and reasoning depth.</p>
       </article>
 
       <article class="feature" data-reveal>
         <h4>Profile & analytics</h4>
-        <p>Track progress, watch rating trends and export performance reports for a coach or your own study.</p>
+        <p>Track performance over time and export progress reports.</p>
       </article>
     </section>
 
     <footer>
-      ARET © <span id="year"></span> — Crafted for curiosity, rigor and fair competition. <a href="login.html">Sign in</a>
+      ARET © <span id="year"></span> · <a href="login.html">Sign in</a>
     </footer>
   </main>
 
-  <!-- ===== Embedded JS: behavior for this page only (no external deps required) ===== -->
+  <!-- ===== Inline JS: page behavior & accessible mobile sidebar ===== -->
   <script>
-  (function(){
-    // Wait for DOM
-    document.addEventListener('DOMContentLoaded', function(){
-      // Elements
-      const header = document.querySelector('.site-header');
+  /* ============================================================
+     ARET — index page UI script (self-contained & commented)
+     - Accessible mobile sidebar (focus trap, close on outside/ESC)
+     - CTA wiring
+     - Orb micro-interactions (low cost)
+     - Feature reveal via IntersectionObserver
+     ============================================================ */
+  (function () {
+    'use strict';
+
+    // Helper: find first focusable element inside an element
+    function firstFocusable(container) {
+      if (!container) return null;
+      return container.querySelector('a, button, input, [tabindex]:not([tabindex="-1"])');
+    }
+
+    // Mobile nav: open/close, focus trap
+    (function setupMobileNav() {
       const toggle = document.getElementById('navToggle');
-      const nav = header ? header.querySelector('.nav') : null;
+      const nav = document.getElementById('primary-nav');
+      let lastFocused = null;
+      let focusables = [];
+      let focusIndex = 0;
 
-      // NAV: open/close with accessibility
-      if (nav && toggle) {
-        function openNav(){
-          nav.classList.add('open');
-          toggle.setAttribute('aria-expanded','true');
-          // avoid background scroll on mobile while nav open
-          document.documentElement.style.overflow = 'hidden';
-          document.body.style.overflow = 'hidden';
-        }
-        function closeNav(){
-          nav.classList.remove('open');
-          toggle.setAttribute('aria-expanded','false');
-          document.documentElement.style.overflow = '';
-          document.body.style.overflow = '';
-        }
-        toggle.addEventListener('click', function(e){
-          e.stopPropagation();
-          nav.classList.contains('open') ? closeNav() : openNav();
-        });
-        // close on click outside or on link click
-        document.addEventListener('click', (ev) => {
-          if (!nav.contains(ev.target) && !toggle.contains(ev.target)) closeNav();
-        });
-        nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
-        document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeNav(); });
+      if (!toggle || !nav) return;
+
+      // Utility to lock/unlock body scroll when nav open
+      function setBodyLocked(lock) {
+        document.documentElement.style.overflow = lock ? 'hidden' : '';
+        document.body.style.overflow = lock ? 'hidden' : '';
       }
 
-      // CTA wiring (relative filenames)
-      const signIn = document.getElementById('ctaSignIn');
-      const signUp = document.getElementById('ctaSignUp');
-      const dash = document.getElementById('ctaDashboard');
-      if (signIn) signIn.addEventListener('click', () => location.href = 'login.html');
-      if (signUp) signUp.addEventListener('click', () => location.href = 'signup.html');
-      if (dash) dash.addEventListener('click', () => location.href = 'dashboard.html');
+      function openNav() {
+        nav.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Close navigation');
+        lastFocused = document.activeElement;
+        setBodyLocked(true);
 
-      // Orb subtle motion: light parallax + float (low-cost)
-      (function(){
-        const orb = document.querySelector('.orb');
-        if (!orb) return;
-        let mx=0, my=0, t=0;
-        window.addEventListener('mousemove', (e) => { mx = (e.clientX / window.innerWidth) - 0.5; my = (e.clientY / window.innerHeight) - 0.5; });
-        function floatLoop(){
-          t += 0.01;
-          const x = Math.sin(t) * 5 + mx * 6;
-          const y = Math.cos(t * 0.8) * 4 + my * 5;
-          const r = mx * 10;
+        // build focusable list and move focus to first item
+        focusables = Array.from(nav.querySelectorAll('a, button, input, [tabindex]:not([tabindex="-1"])')).filter(Boolean);
+        focusIndex = 0;
+        if (focusables.length) focusables[0].focus();
+        // ensure top visible
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+
+      function closeNav() {
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open navigation');
+        setBodyLocked(false);
+        if (lastFocused) lastFocused.focus();
+      }
+
+      // Toggle handler
+      toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (nav.classList.contains('open')) closeNav();
+        else openNav();
+      });
+
+      // Close on outside click
+      document.addEventListener('click', function (e) {
+        if (!nav.contains(e.target) && e.target !== toggle && nav.classList.contains('open')) {
+          closeNav();
+        }
+      });
+
+      // Close on ESC; trap Tab inside nav when open
+      document.addEventListener('keydown', function (e) {
+        if (!nav.classList.contains('open')) return;
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeNav();
+          return;
+        }
+        if (e.key === 'Tab') {
+          // simple focus trap: cycle focusables
+          if (focusables.length === 0) return;
+          if (e.shiftKey) {
+            // backward
+            focusIndex = (focusIndex - 1 + focusables.length) % focusables.length;
+          } else {
+            // forward
+            focusIndex = (focusIndex + 1) % focusables.length;
+          }
+          focusables[focusIndex].focus();
+          e.preventDefault();
+        }
+      });
+
+      // Close nav on window resize to avoid sticky states
+      let resizeTimer = null;
+      window.addEventListener('resize', function () {
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+          if (window.innerWidth > 900 && nav.classList.contains('open')) closeNav();
+        }, 160);
+      });
+
+      // Close nav on link click (mobile UX)
+      nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+    })();
+
+    // CTA wiring (uses exact filenames in your project)
+    (function bindCTAs() {
+      const btnSignIn = document.getElementById('btn-signin');
+      const btnSignUp = document.getElementById('btn-signup');
+      const btnDash = document.getElementById('btn-dashboard');
+
+      if (btnSignIn) btnSignIn.addEventListener('click', () => window.location.href = 'login.html');
+      if (btnSignUp) btnSignUp.addEventListener('click', () => window.location.href = 'signup.html');
+      if (btnDash) btnDash.addEventListener('click', () => window.location.href = 'dashboard.html');
+    })();
+
+    // Orb micro-interaction: gentle float + mouse parallax (low CPU)
+    (function orbMotion(){
+      const orb = document.querySelector('.orb');
+      if (!orb) return;
+      let mx=0,my=0,t=0;
+      // Capture light mouse movement but do not run heavy logic on reduced-motion
+      const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduced) {
+        window.addEventListener('mousemove', (e) => {
+          mx = (e.clientX / window.innerWidth) - 0.5;
+          my = (e.clientY / window.innerHeight) - 0.5;
+        });
+        function loop() {
+          t += 0.012;
+          const x = Math.sin(t) * 4 + mx * 6;
+          const y = Math.cos(t * 0.82) * 3 + my * 5;
+          const r = mx * 8;
           orb.style.transform = `translate(${x}px, ${y}px) rotate(${r}deg)`;
-          requestAnimationFrame(floatLoop);
+          requestAnimationFrame(loop);
         }
-        requestAnimationFrame(floatLoop);
-
-        // Resize micro-adjust for tiny screens
-        if (window.ResizeObserver) {
-          const ro = new ResizeObserver(entries => {
-            for (const e of entries) {
-              const w = e.contentRect.width;
-              orb.style.transform += (w < 220 ? ' scale(.95)' : '');
-            }
-          });
-          ro.observe(orb);
-        }
-      })();
-
-      // IntersectionObserver reveal for features
-      (function(){
-        const reveals = document.querySelectorAll('[data-reveal]');
-        if (!reveals.length) return;
-        if (!('IntersectionObserver' in window)) { reveals.forEach(r => r.classList.add('show')); return; }
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('show');
-              io.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.2 });
-        reveals.forEach((r,i) => { r.style.transitionDelay = (i*80)+'ms'; io.observe(r); });
-      })();
-
-      // Accessibility: focus main heading on load
-      const h = document.querySelector('.hero h1');
-      if (h) { h.setAttribute('tabindex','-1'); h.focus(); }
-
-      // Year
-      const yearEl = document.getElementById('year'); if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-      // Respect prefers-reduced-motion and low-power devices
-      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.querySelectorAll('.orb, .feature').forEach(el => { el.style.animation = 'none'; el.style.transition = 'none'; });
+        requestAnimationFrame(loop);
       }
+      // Resize micro-adjustment for tiny screens (keeps emblem visible)
+      if (window.ResizeObserver) {
+        const ro = new ResizeObserver(entries => {
+          for (const e of entries) {
+            const w = e.contentRect.width;
+            if (w < 220) orb.style.transform += ' scale(.95)';
+          }
+        });
+        ro.observe(orb);
+      }
+    })();
+
+    // Feature reveal: IntersectionObserver with graceful fallback
+    (function featureReveal() {
+      const items = document.querySelectorAll('.feature');
+      if (!items.length) return;
+      if (!('IntersectionObserver' in window)) {
+        items.forEach(i => i.classList.add('show')); return;
+      }
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18 });
+      items.forEach((it, idx) => {
+        it.style.transitionDelay = (idx * 80) + 'ms';
+        io.observe(it);
+      });
+    })();
+
+    // Accessibility: place focus on main heading on load for screen readers
+    window.addEventListener('load', function() {
+      const h = document.getElementById('hero-heading');
+      if (h) {
+        h.setAttribute('tabindex','-1');
+        h.focus({ preventScroll: true });
+      }
+      // Year stamp
+      const y = document.getElementById('year');
+      if (y) y.textContent = new Date().getFullYear();
     });
   })();
   </script>
-  <!-- ===== end page JS ===== -->
 </body>
-                                                </html>
+                </html>
