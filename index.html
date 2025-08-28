@@ -5,33 +5,210 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>ARET — Home</title>
   <meta name="description" content="ARET — cosmic + Ancient Egyptian competition portal. Enter the portal to compete, learn and track progress." />
+  <!-- Fonts (optional external resource) -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&display=swap" as="style">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- ===== Embedded styles: main page only (no external CSS) ===== -->
   <style>
-    :root{ --hero-min:1.3rem; --hero-mid:2.25rem; --hero-max:3.25rem; }
-    .hero-inner { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: clamp(12px, 2.2vw, 28px); align-items:center; }
-    .hero h1 { font-size: clamp(var(--hero-min), 4vw, var(--hero-max)); line-height:1.02; margin:0 0 .6rem 0; }
-    .orb { width: min(46vw, 320px); height: auto; aspect-ratio:1/1; display:grid; place-items:center; margin-inline:auto; transition: transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .35s; }
-    .cta { min-height:56px; padding:12px 18px; font-size: clamp(14px, 2.6vw, 16px); }
-    @media (max-width:420px) { .hero { padding-block:22px } .hero-card{ padding:18px; border-radius:12px } .nav a{ padding:10px; font-size:14px } }
+    :root{
+      --bg-1:#040214;
+      --bg-2:#07142a;
+      --gold:#FFD36E;
+      --turq:#4EE2C7;
+      --muted:#9aa6b2;
+      --glass: rgba(255,255,255,0.04);
+      --glass-border: rgba(255,255,255,0.06);
+      --max-width:1200px;
+      --pad:16px;
+      --fs-sm:14px;
+      --fs-md:16px;
+      --safe-top: env(safe-area-inset-top);
+      --safe-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* --- Basic reset & body --- */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Poppins, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:#eaf6fb;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(78,226,199,0.02), transparent),
+        linear-gradient(180deg,var(--bg-1) 0%, var(--bg-2) 60%, #000 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:stretch;
+      overflow-x:hidden;
+      font-size:var(--fs-md);
+    }
+
+    /* decorative layers (starfield + nebula) */
+    .starfield{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background-image:
+        radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 100%),
+        radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 100%),
+        radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%);
+      opacity:0.45; filter:drop-shadow(0 0 6px rgba(78,226,199,0.04)); animation:twinkle 8s linear infinite;}
+    @keyframes twinkle{0%{opacity:0.3}50%{opacity:0.46}100%{opacity:0.3}}
+    .nebula{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:radial-gradient(circle at 20% 20%, rgba(78,226,199,0.04), transparent 8%),
+                 radial-gradient(circle at 80% 60%, rgba(255,211,110,0.03), transparent 12%);
+      mix-blend-mode:screen; animation:drift 20s linear infinite;}
+    @keyframes drift{0%{transform:translateX(-8px) translateY(0)}50%{transform:translateX(8px) translateY(-8px)}100%{transform:translateX(-8px) translateY(0)}}
+
+    /* --- Header --- */
+    .site-header{
+      position:fixed;
+      top:0; left:0; right:0;
+      z-index:40;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: calc(10px + var(--safe-top)) var(--pad);
+      background: linear-gradient(180deg, rgba(3,6,12,0.18), transparent);
+      border-bottom:1px solid rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px);
+    }
+    .brand-inline{display:flex;gap:12px;align-items:center}
+    .brand-inline svg{width:40px;height:40px;flex-shrink:0}
+    .brand-title{font-family:Cinzel,serif;font-size:18px;color:transparent;background:linear-gradient(90deg,var(--gold),var(--turq));-webkit-background-clip:text}
+    .brand-sub{font-size:12px;color:var(--muted)}
+
+    /* nav */
+    .nav{display:flex;gap:8px;align-items:center}
+    .nav a{color:var(--muted);text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .14s;font-size:var(--fs-sm)}
+    .nav a:hover,.nav a:focus{color:#fff;transform:translateY(-2px)}
+
+    /* mobile nav toggle */
+    .nav-toggle{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--muted);cursor:pointer}
+    .nav-toggle svg{width:20px;height:20px}
+
+    /* collapsed overlay nav for small screens */
+    @media (max-width:799px){
+      .nav{
+        position:fixed;
+        left:0; right:0;
+        top:64px;
+        bottom:0;
+        display:flex;
+        flex-direction:column;
+        gap:0;
+        padding:12px;
+        background:linear-gradient(180deg, rgba(3,6,12,0.96), rgba(3,6,12,0.98));
+        transform:translateY(-120%);
+        opacity:0;
+        pointer-events:none;
+        transition: transform .28s ease, opacity .18s;
+        z-index:60;
+        overflow:auto;
+      }
+      .nav.open{transform:translateY(0);opacity:1;pointer-events:auto}
+      .nav a{display:block;padding:12px 14px;border-radius:10px}
+      .nav-toggle{display:flex}
+    }
+    @media (min-width:800px){
+      .nav{position:static;transform:none;opacity:1;pointer-events:auto}
+      .nav-toggle{display:none}
+    }
+
+    /* --- Main layout / hero --- */
+    main{margin-top:calc(64px + var(--safe-top)); z-index:10;}
+    .hero{
+      padding:20px min(6vw,40px);
+      min-height:68vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+
+    .container{width:100%;max-width:var(--max-width);margin:0 auto}
+    .hero-inner{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: clamp(12px, 2.2vw, 28px);
+      align-items:center;
+      width:100%;
+    }
+
+    .card{
+      background:var(--glass);
+      border-radius:14px;
+      padding:18px;
+      border:1px solid var(--glass-border);
+      box-shadow:0 16px 50px rgba(3,6,12,0.6);
+    }
+    .hero-card{padding:20px}
+    .hero h1{font-family:Cinzel, serif; font-size:clamp(1.35rem, 4vw, 2.6rem); margin:0 0 8px 0; line-height:1.02}
+    .lead{margin:6px 0 14px;color:var(--muted);font-size:var(--fs-sm)}
+
+    /* CTAs */
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+    .cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 16px;border-radius:12px;border:none;cursor:pointer;font-weight:700;min-height:48px}
+    .cta.primary{background:linear-gradient(90deg,var(--gold),var(--turq));color:#071014}
+    .cta.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+
+    /* orb (inline SVG wrapper) */
+    .panel-visual{display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center}
+    .orb{width:min(46vw,320px);aspect-ratio:1/1;display:grid;place-items:center; margin-inline:auto; max-width:84vw;max-height:48vh;transition:transform .35s ease}
+
+    /* feature grid */
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;padding:18px}
+    .feature{background:var(--glass);padding:16px;border-radius:12px;border:1px solid var(--glass-border);transform:translateY(14px);opacity:0;transition:all .6s;will-change:transform,opacity}
+    .feature.show{transform:none;opacity:1}
+    .feature h4{margin:0 0 8px 0}
+    .feature p{margin:0;color:var(--muted);font-size:var(--fs-sm)}
+
+    /* footer */
+    footer{padding:24px;text-align:center;color:var(--muted);padding-bottom:calc(18px + var(--safe-bottom))}
+
+    /* Responsive mobile friendly tweaks */
+    @media (max-width:520px){
+      .hero{min-height:60vh;padding:14px}
+      .hero-card{padding:14px;border-radius:12px;box-shadow:0 10px 30px rgba(3,6,12,0.55)}
+      .cta-row{flex-direction:column}
+      .cta{width:100%;min-height:56px;padding:14px;font-size:16px;border-radius:10px}
+      .brand-inline .title{font-size:18px}
+      .brand-inline svg{width:34px;height:34px}
+      .nav{top:calc(64px + var(--safe-top));}
+      .features{padding-inline:12px}
+    }
+
+    /* reduced-motion */
+    @media (prefers-reduced-motion: reduce){
+      .starfield, .nebula, .orb, .feature{animation:none !important; transition:none !important}
+    }
+
+    /* Accessibility focus */
+    a:focus, button:focus, input:focus{outline:3px solid rgba(78,226,199,0.12);outline-offset:2px}
+
+    /* small utility */
+    .muted{color:var(--muted)}
   </style>
+  <!-- ===== end embedded styles ===== -->
 </head>
 <body>
+  <!-- decorative layers -->
   <div class="starfield" aria-hidden="true"></div>
   <div class="nebula" aria-hidden="true"></div>
 
+  <!-- Header -->
   <header class="site-header" role="banner">
     <div class="brand-inline" aria-hidden="false">
-      <svg width="40" height="40" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
         <rect x="2" y="2" width="60" height="60" rx="10" fill="rgba(255,215,110,0.03)" stroke="rgba(255,215,110,0.08)"/>
         <path d="M32 14 L44 30 L20 30 Z" fill="url(#g)"/>
         <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#FFD36E"/><stop offset="1" stop-color="#4EE2C7"/></linearGradient></defs>
       </svg>
       <div>
-        <div class="title">ARET</div>
-        <div style="font-size:11px;color:var(--muted)">Cosmic • Hieroglyphic</div>
+        <div class="brand-title">ARET</div>
+        <div class="brand-sub">Cosmic · Hieroglyphic</div>
       </div>
     </div>
 
@@ -40,141 +217,153 @@
     </button>
 
     <nav class="nav" role="navigation" aria-label="Primary">
-      <a href="index.html" class="link">Home</a>
-      <a href="about.html" class="link">About</a>
-      <a href="signup.html" class="link">Sign up</a>
-      <a href="login.html" class="link">Sign in</a>
-      <a href="recover.html" class="link">Recover</a>
-      <a href="dashboard.html" class="link">Dashboard</a>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="signup.html">Sign up</a>
+      <a href="login.html">Sign in</a>
+      <a href="recover.html">Recover</a>
+      <a href="dashboard.html">Dashboard</a>
     </nav>
   </header>
 
-  <section class="hero" role="region" aria-label="Hero" style="padding:24px 16px; min-height:72vh; display:flex; align-items:center; justify-content:center;">
-    <div class="hero-inner container" style="max-width:1200px;">
-      <div class="hero-card card" aria-hidden="false">
-        <h1>Enter the ARET portal</h1>
-        <p class="lead">Aret fuses cosmic patterns with timeless hieroglyphics. Compete in rounds, solve puzzles, and climb the leaderboard — one elegant move at a time.</p>
+  <!-- Main content -->
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="card hero-card" aria-labelledby="heroTitle">
+          <h1 id="heroTitle">Enter the ARET portal</h1>
+          <p class="lead">Aret fuses cosmic patterns with ancient hieroglyphics. Compete in rounds, solve puzzles, and climb the leaderboard — one elegant move at a time.</p>
 
-        <div class="cta-row" style="display:flex;gap:12px;flex-wrap:wrap">
-          <button class="cta primary" id="ctaSignIn" aria-label="Sign in">Sign in</button>
-          <button class="cta ghost" id="ctaSignUp" aria-label="Create account">Create account</button>
-          <button class="cta ghost" id="ctaDashboard" aria-label="Open dashboard">Open dashboard</button>
+          <div class="cta-row" role="toolbar" aria-label="Primary actions">
+            <button class="cta primary" id="ctaSignIn">Sign in</button>
+            <button class="cta ghost" id="ctaSignUp">Create account</button>
+            <button class="cta ghost" id="ctaDashboard">Open dashboard</button>
+          </div>
+
+          <div style="margin-top:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <div style="display:flex;gap:8px;align-items:center">
+              <div style="width:10px;height:10px;border-radius:99px;background:var(--turq)"></div>
+              <div class="muted">Live puzzles</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;margin-left:12px">
+              <div style="width:10px;height:10px;border-radius:99px;background:var(--gold)"></div>
+              <div class="muted">Season leaderboard</div>
+            </div>
+          </div>
         </div>
 
-        <div style="margin-top:18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-          <div style="display:flex;gap:8px;align-items:center">
-            <div style="width:10px;height:10px;border-radius:99px;background:var(--turq)"></div>
-            <div style="font-size:13px;color:var(--muted)">Live puzzles</div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center;margin-left:12px">
-            <div style="width:10px;height:10px;border-radius:99px;background:var(--gold)"></div>
-            <div style="font-size:13px;color:var(--muted)">Season leaderboard</div>
-          </div>
-        </div>
-      </div>
+        <!-- Inline SVG emblem — no external assets required -->
+        <div class="panel-visual" aria-hidden="false">
+          <svg class="orb" viewBox="0 0 320 320" role="img" aria-label="ARET emblem" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="neb" cx="30%" cy="30%" r="60%">
+                <stop offset="0%" stop-color="#4EE2C7" stop-opacity="0.28"/>
+                <stop offset="55%" stop-color="#FFD36E" stop-opacity="0.12"/>
+                <stop offset="100%" stop-color="#07142a" stop-opacity="0.02"/>
+              </radialGradient>
+              <linearGradient id="goldTurq" x1="0" x2="1">
+                <stop offset="0" stop-color="#FFD36E"/>
+                <stop offset="1" stop-color="#4EE2C7"/>
+              </linearGradient>
+              <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="6" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
 
-      <!-- INLINE SVG EMBLEM (no external assets required) -->
-      <div class="panel-visual" style="display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center">
-        <svg class="orb" viewBox="0 0 320 320" role="img" aria-label="ARET emblem">
-          <defs>
-            <radialGradient id="neb" cx="30%" cy="30%" r="60%">
-              <stop offset="0%" stop-color="#4EE2C7" stop-opacity="0.28"/>
-              <stop offset="55%" stop-color="#FFD36E" stop-opacity="0.12"/>
-              <stop offset="100%" stop-color="#07142a" stop-opacity="0.02"/>
-            </radialGradient>
+            <!-- nebula -->
+            <circle cx="160" cy="160" r="150" fill="url(#neb)" />
 
-            <linearGradient id="goldTurq" x1="0" x2="1">
-              <stop offset="0%" stop-color="#FFD36E"/>
-              <stop offset="100%" stop-color="#4EE2C7"/>
-            </linearGradient>
-
-            <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="8" result="b"/>
-              <feMerge>
-                <feMergeNode in="b"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-
-          <!-- subtle nebula / glow -->
-          <circle cx="160" cy="160" r="150" fill="url(#neb)" />
-
-          <!-- concentric rings with faint stroke -->
-          <g stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none">
-            <circle cx="160" cy="160" r="120"/>
-            <circle cx="160" cy="160" r="90"/>
-            <circle cx="160" cy="160" r="60"/>
-          </g>
-
-          <!-- central glyph (Eye-like hieroglyph stylized) -->
-          <g transform="translate(0, -6)" filter="url(#softGlow)">
-            <path d="M80 160 C110 120, 210 120, 240 160 C210 200,110 200,80 160 Z" fill="none" stroke="url(#goldTurq)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="160" cy="160" r="20" fill="url(#goldTurq)" />
-            <!-- small stars -->
-            <g fill="#FFD36E" opacity="0.85">
-              <circle cx="110" cy="120" r="2.5"/>
-              <circle cx="208" cy="118" r="2"/>
-              <circle cx="130" cy="205" r="1.8"/>
+            <!-- concentric guide rings -->
+            <g stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none">
+              <circle cx="160" cy="160" r="112"/>
+              <circle cx="160" cy="160" r="84"/>
+              <circle cx="160" cy="160" r="56"/>
             </g>
-          </g>
 
-          <!-- decorative pyramid silhouette (subtle) -->
-          <path d="M60 240 L160 120 L260 240 Z" fill="rgba(7,20,42,0.06)"/>
+            <!-- eye glyph -->
+            <g transform="translate(0,-6)" filter="url(#softGlow)">
+              <path d="M80 160 C110 120, 210 120, 240 160 C210 200,110 200,80 160 Z" fill="none" stroke="url(#goldTurq)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="160" cy="160" r="18" fill="url(#goldTurq)" />
+              <g fill="#FFD36E" opacity="0.9">
+                <circle cx="112" cy="122" r="2.4"/>
+                <circle cx="208" cy="118" r="2.1"/>
+                <circle cx="130" cy="205" r="1.6"/>
+              </g>
+            </g>
 
-          <!-- thin outer ring with gradient stroke -->
-          <circle cx="160" cy="160" r="152" fill="none" stroke="url(#goldTurq)" stroke-opacity="0.06" stroke-width="6"/>
-        </svg>
+            <!-- subtle pyramid silhouette -->
+            <path d="M60 240 L160 120 L260 240 Z" fill="rgba(7,20,42,0.06)"/>
 
-        <div class="center" style="color:var(--muted);font-size:var(--fs-sm)">Cosmic motions · Ancient marks</div>
+            <!-- outer ring -->
+            <circle cx="160" cy="160" r="152" fill="none" stroke="url(#goldTurq)" stroke-opacity="0.06" stroke-width="6"/>
+          </svg>
+
+          <div class="muted" style="font-size:var(--fs-sm)">Cosmic motions · Ancient marks</div>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <svg class="float-glyph glyph-1" viewBox="0 0 120 120" aria-hidden="true" style="position:absolute;left:6%;top:18%;width:120px;opacity:0.08;pointer-events:none"><path d="M10 80 L60 10 L110 80 Z" fill="none" stroke="rgba(255,215,110,0.12)"/></svg>
-    <svg class="float-glyph glyph-2" viewBox="0 0 80 80" aria-hidden="true" style="position:absolute;right:4%;top:12%;width:80px;opacity:0.08;pointer-events:none"><circle cx="40" cy="24" r="18" stroke="rgba(78,226,199,0.12)" fill="none"/></svg>
-    <svg class="float-glyph glyph-3" viewBox="0 0 140 140" aria-hidden="true" style="position:absolute;right:8%;bottom:6%;width:140px;opacity:0.08;pointer-events:none"><path d="M20 100 C40 60,100 60,120 100" stroke="rgba(255,215,110,0.08)" fill="none"/></svg>
-  </section>
+    <section class="features" aria-label="Site features">
+      <article class="feature" data-reveal>
+        <h4>Compete in rounds</h4>
+        <p>Regularly scheduled competitions with ranking, feedback and real-time leaderboards.</p>
+      </article>
 
-  <section class="features container" aria-label="Site features" style="padding:18px 16px 28px;">
-    <article class="feature" data-reveal>
-      <h4>Compete in rounds</h4>
-      <p>Regularly scheduled competitions with ranking, feedback and real-time leaderboards.</p>
-    </article>
+      <article class="feature" data-reveal>
+        <h4>Practice & puzzles</h4>
+        <p>Progressive puzzles and mission paths crafted to improve deep thinking and pattern recognition.</p>
+      </article>
 
-    <article class="feature" data-reveal>
-      <h4>Practice & puzzles</h4>
-      <p>Progressive puzzles and mission paths crafted to improve deep thinking and pattern recognition.</p>
-    </article>
+      <article class="feature" data-reveal>
+        <h4>Profile & analytics</h4>
+        <p>Track progress, watch rating trends and export performance reports for a coach or your own study.</p>
+      </article>
+    </section>
 
-    <article class="feature" data-reveal>
-      <h4>Profile & analytics</h4>
-      <p>Track progress, watch rating trends and export performance reports for a coach or your own study.</p>
-    </article>
-  </section>
+    <footer>
+      ARET © <span id="year"></span> — Crafted for curiosity, rigor and fair competition. <a href="login.html">Sign in</a>
+    </footer>
+  </main>
 
-  <footer class="site-footer container" style="padding:28px 16px;text-align:center;color:var(--muted);">
-    ARET © <span id="year"></span> — Crafted for curiosity, rigor and fair competition. <a href="login.html" class="link">Sign in</a>
-  </footer>
-
-  <script src="js/auth.js" defer></script>
-
+  <!-- ===== Embedded JS: behavior for this page only (no external deps required) ===== -->
   <script>
   (function(){
+    // Wait for DOM
     document.addEventListener('DOMContentLoaded', function(){
+      // Elements
       const header = document.querySelector('.site-header');
       const toggle = document.getElementById('navToggle');
       const nav = header ? header.querySelector('.nav') : null;
-      if (nav && toggle) {
-        function closeNav(){ nav.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); }
-        function openNav(){ nav.classList.add('open'); toggle.setAttribute('aria-expanded','true'); }
 
-        toggle.addEventListener('click', function(e){ e.stopPropagation(); if (nav.classList.contains('open')) closeNav(); else openNav(); });
-        nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => closeNav()));
-        document.addEventListener('click', (ev) => { if (!nav.contains(ev.target) && !toggle.contains(ev.target)) closeNav(); });
+      // NAV: open/close with accessibility
+      if (nav && toggle) {
+        function openNav(){
+          nav.classList.add('open');
+          toggle.setAttribute('aria-expanded','true');
+          // avoid background scroll on mobile while nav open
+          document.documentElement.style.overflow = 'hidden';
+          document.body.style.overflow = 'hidden';
+        }
+        function closeNav(){
+          nav.classList.remove('open');
+          toggle.setAttribute('aria-expanded','false');
+          document.documentElement.style.overflow = '';
+          document.body.style.overflow = '';
+        }
+        toggle.addEventListener('click', function(e){
+          e.stopPropagation();
+          nav.classList.contains('open') ? closeNav() : openNav();
+        });
+        // close on click outside or on link click
+        document.addEventListener('click', (ev) => {
+          if (!nav.contains(ev.target) && !toggle.contains(ev.target)) closeNav();
+        });
+        nav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
         document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeNav(); });
       }
 
-      // CTA wiring
+      // CTA wiring (relative filenames)
       const signIn = document.getElementById('ctaSignIn');
       const signUp = document.getElementById('ctaSignUp');
       const dash = document.getElementById('ctaDashboard');
@@ -182,15 +371,23 @@
       if (signUp) signUp.addEventListener('click', () => location.href = 'signup.html');
       if (dash) dash.addEventListener('click', () => location.href = 'dashboard.html');
 
-      // Orb float & parallax (kept light)
-      const orb = document.querySelector('.orb');
-      if (orb) {
-        let mx = 0, my = 0, t = 0;
+      // Orb subtle motion: light parallax + float (low-cost)
+      (function(){
+        const orb = document.querySelector('.orb');
+        if (!orb) return;
+        let mx=0, my=0, t=0;
         window.addEventListener('mousemove', (e) => { mx = (e.clientX / window.innerWidth) - 0.5; my = (e.clientY / window.innerHeight) - 0.5; });
-        function floatLoop(){ t += 0.01; const x = Math.sin(t)*5 + mx*8; const y = Math.cos(t*0.8)*4 + my*6; const r = mx*10; orb.style.transform = `translate(${x}px, ${y}px) rotate(${r}deg)`; requestAnimationFrame(floatLoop); }
+        function floatLoop(){
+          t += 0.01;
+          const x = Math.sin(t) * 5 + mx * 6;
+          const y = Math.cos(t * 0.8) * 4 + my * 5;
+          const r = mx * 10;
+          orb.style.transform = `translate(${x}px, ${y}px) rotate(${r}deg)`;
+          requestAnimationFrame(floatLoop);
+        }
         requestAnimationFrame(floatLoop);
 
-        // ResizeObserver micro-adjust
+        // Resize micro-adjust for tiny screens
         if (window.ResizeObserver) {
           const ro = new ResizeObserver(entries => {
             for (const e of entries) {
@@ -200,29 +397,38 @@
           });
           ro.observe(orb);
         }
-      }
+      })();
 
-      // Feature reveal
-      const reveals = document.querySelectorAll('[data-reveal]');
-      if (reveals.length && 'IntersectionObserver' in window) {
+      // IntersectionObserver reveal for features
+      (function(){
+        const reveals = document.querySelectorAll('[data-reveal]');
+        if (!reveals.length) return;
+        if (!('IntersectionObserver' in window)) { reveals.forEach(r => r.classList.add('show')); return; }
         const io = new IntersectionObserver((entries) => {
-          entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('show'); io.unobserve(entry.target); }});
-        }, { threshold: 0.18 });
-        reveals.forEach((r,i) => { r.style.transitionDelay = (i*90)+'ms'; io.observe(r); });
-      } else {
-        reveals.forEach(r => r.classList.add('show'));
-      }
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('show');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.2 });
+        reveals.forEach((r,i) => { r.style.transitionDelay = (i*80)+'ms'; io.observe(r); });
+      })();
 
-      // Accessibility: focus heading + year
-      const h = document.querySelector('.hero h1'); if (h) { h.setAttribute('tabindex','-1'); h.focus(); }
+      // Accessibility: focus main heading on load
+      const h = document.querySelector('.hero h1');
+      if (h) { h.setAttribute('tabindex','-1'); h.focus(); }
+
+      // Year
       const yearEl = document.getElementById('year'); if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-      // Respect prefers-reduced-motion
+      // Respect prefers-reduced-motion and low-power devices
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.querySelectorAll('.orb, .float-glyph, .feature').forEach(el => { el.style.animation = 'none'; el.style.transition = 'none'; });
+        document.querySelectorAll('.orb, .feature').forEach(el => { el.style.animation = 'none'; el.style.transition = 'none'; });
       }
     });
   })();
   </script>
+  <!-- ===== end page JS ===== -->
 </body>
-  </html>
+                                                </html>
